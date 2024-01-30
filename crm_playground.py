@@ -58,16 +58,16 @@ def class_wise_nsc_master(nsc_df):
     if not os.path.exists(new_path):
         os.makedirs(new_path)
     
-    nsc_df[nsc_df['CONN_CLASS'] == 'A'].to_excel(os.path.join(os.path.abspath(new_path) ,'agri_nsc.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'I'].to_excel(os.path.join(os.path.abspath(new_path) ,'ind_nsc.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'EV'].to_excel(os.path.join(os.path.abspath(new_path) ,'ev_nsc.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])].to_excel(os.path.join(os.path.abspath(new_path) ,'govt_nsc.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'D'].to_excel(os.path.join(os.path.abspath(new_path) ,'dom_nsc.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'C'].to_excel(os.path.join(os.path.abspath(new_path) ,'comm_nsc.xlsx'))
-    nsc_df[nsc_df['APPLIED_AS'] == "Promoter/Developer"].to_excel(os.path.join(os.path.abspath(new_path) ,'proc_b_nsc.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'] == 'A'].to_excel(os.path.join(os.path.abspath(new_path) ,'agri_nsc_master.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'] == 'I'].to_excel(os.path.join(os.path.abspath(new_path) ,'ind_nsc_master.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'] == 'EV'].to_excel(os.path.join(os.path.abspath(new_path) ,'ev_nsc_master.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])].to_excel(os.path.join(os.path.abspath(new_path) ,'govt_nsc_master.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'] == 'D'].to_excel(os.path.join(os.path.abspath(new_path) ,'dom_nsc_master.xlsx'))
+    nsc_df[nsc_df['CONN_CLASS'] == 'C'].to_excel(os.path.join(os.path.abspath(new_path) ,'comm_nsc_master.xlsx'))
+    nsc_df[nsc_df['APPLIED_AS'] == "Promoter/Developer"].to_excel(os.path.join(os.path.abspath(new_path) ,'proc_b_nsc_master.xlsx'))
     tower_nsc_df_logic = ( nsc_df['NAME'].str.contains('SUMMIT') ) |( nsc_df['NAME'].str.contains('RELIANCE GIO') ) |\
     ( nsc_df['NAME'].str.contains('RELIANCE JIO') ) | ( nsc_df['NAME'].str.contains('INDUS TOWER') ) | ( nsc_df['NAME'].str.contains('INDUSTOWER') )
-    nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc.xlsx'))
+    nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc_master.xlsx'))
     print("base class wise , govt , tower nsc master files created in nsc_class_wise_master folder")
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
@@ -96,6 +96,7 @@ def main():
     #create_folder(foldername)
     #prob_wise_file_creation(foldername , filename)
     new_connection(foldername , ) 
+
 
 if __name__ == '__main__':
     main()
