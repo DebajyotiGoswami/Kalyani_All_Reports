@@ -46,7 +46,16 @@ def prob_wise_file_creation(foldername , filename):
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
 
-def class_wise_nsc_master(filename)
+def class_wise_nsc_master(nsc_df):
+    '''
+    this function create class wise master file of new connection like
+    agri_nsc , ind_nsc , govt_nsc , tower_nsc , proc_b_nsc etc.
+    
+    argument -- pandas dataframe
+    return -- None
+    '''
+    print(nsc_df.shape)
+
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -57,11 +66,12 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     actual_path = os.getcwd()
     os.chdir(foldername)
-    
+
     if not os.path.exists(filename):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
-    df = pd.read_excel(fullname)
+    nsc_df = pd.read_excel(filename)
+    class_wise_nsc_master(nsc_df)
 
     os.chdir(actual_path)
 
