@@ -9,15 +9,15 @@ def file_exists(filename):
     '''
     this function checks whether a given filename exist in current directory or not
     argument -- text 
-    return -- True / False
+    return -- None
     '''
-    return os.path.exists(filename)
+    if not os.path.exists(filename):
+        print("Filename {} does not exists . Create the file and try again".format(filename))
+        exit(1)
 
 def main():
-    print("hello")
     filename = "APPLICATION_DETAILS.xlsx"
-    flag = file_exists(filename)
-    print(flag)
+    file_exists(filename)
 
 if __name__ == '__main__':
     main()
