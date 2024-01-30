@@ -40,7 +40,7 @@ def prob_wise_file_creation(foldername , filename):
     '''
     crm_data = pd.read_excel(filename) # main DataFrame 
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
-        prob_name = each_prob_type.replace(" ","_")+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
+        prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(foldername) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
