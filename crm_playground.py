@@ -1,4 +1,4 @@
-import pandas as pandas
+import pandas as pd
 import numpy as np
 from pandas import Series , DataFrame
 import os
@@ -8,6 +8,7 @@ from datetime import datetime
 def file_exists(filename):
     '''
     this function checks whether a given filename exist in current directory or not
+
     argument -- text 
     return -- None
     '''
@@ -18,6 +19,7 @@ def file_exists(filename):
 def create_folder(foldername):
     '''
     this function create a folder named "crm_files". Nothing else.
+
     argument -- text
     return -- None
     '''
@@ -28,11 +30,28 @@ def create_folder(foldername):
     else:
         print("{} folder already exists".format(foldername))
 
+def prob_wise_file_creation(foldername , filename):
+    '''
+    this function search different prob_type in mother file and create separate files
+    based on those prob_type and rename them with prob_type , date , time
+
+    argument -- text
+    return -- None
+    '''
+    crm_data = pd.read_excel(filename) # main DataFrame 
+    for each_prob_type in list(set(crm_data['PROB_TYPE'])):
+        prob_name = each_prob_type.replace(" ","_")+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
+        fullname = os.path.join(os.path.abspath(foldername) , prob_name + '.xlsx')
+        df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
+        df.to_excel(fullname)
+        print("{} file created under {} folder".format(fullname , foldername))
+    
 def main():
     filename = "APPLICATION_DETAILS.xlsx"
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)
     create_folder(foldername)
+    prob_wise_file_creation(foldername , filename)
 
 if __name__ == '__main__':
     main()
