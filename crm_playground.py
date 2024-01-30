@@ -45,13 +45,23 @@ def prob_wise_file_creation(foldername , filename):
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
+
+def new_connection(foldername , filename = "New_Connection.xlsx"):
+    '''
+    this function take care of all NSC related reports like pending nsc , pending master card , 
+    collection in this month , connection in this month , witheld , class wise nsc master etc.
     
+    argument -- text as file name . default file name is New_Connection.xlsx
+    return -- None
+    '''
+
 def main():
     filename = "APPLICATION_DETAILS.xlsx"
     foldername = 'ALL_CRM_FILES'
-    file_exists(filename)
-    create_folder(foldername)
-    prob_wise_file_creation(foldername , filename)
+    #file_exists(filename)
+    #create_folder(foldername)
+    #prob_wise_file_creation(foldername , filename)
+    new_connection(foldername , ) 
 
 if __name__ == '__main__':
     main()
