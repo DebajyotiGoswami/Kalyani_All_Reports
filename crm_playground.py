@@ -3,6 +3,8 @@ import numpy as np
 from pandas import Series , DataFrame
 import os
 from datetime import datetime
+import datetime as datetime_module
+
 
 
 def file_exists(filename):
@@ -70,6 +72,21 @@ def class_wise_nsc_master(nsc_df):
     nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc_master.xlsx'))
     print("base class wise , govt , tower nsc master files created in nsc_class_wise_master folder")
 
+def last_months_date():
+    '''
+    this function gets the first day and last day of previous months
+    
+    argument -- None
+    return -- Tuple
+    '''
+    today = datetime_module.date.today()
+    first_day_curr_month = today.replace(day = 1)
+    last_month_end_day = first_day_curr_month - datetime_module.timedelta(days=1)
+    last_month_first_day = last_month_end_day.replace(day = 1)
+    date_1 = last_month_first_day.strftime("%Y-%m-%d")
+    date_2 = last_month_end_day.strftime("%Y-%m-%d")
+    return date_1 , date_2
+
 def different_nsc_reports(nsc_df):
     '''
     this function creates different NSC related reports except NSC master report and NSC pending reports
@@ -78,13 +95,14 @@ def different_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "nsc_other_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
+    # new_path = os.path.join(os.getcwd() , "nsc_other_reports")
+    # if not os.path.exists(new_path):
+    #     os.makedirs(new_path)
 
     first_date , last_date = last_months_date()
-    nsc_df[nsc_df['COLLECTION_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
-    nsc_df[nsc_df['METER_INSTALL_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
+    print(first_date , last_date , type(first_date) , type(last_date))
+    # nsc_df[nsc_df['COLLECTION_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
+    # nsc_df[nsc_df['METER_INSTALL_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
