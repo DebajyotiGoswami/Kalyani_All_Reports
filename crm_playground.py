@@ -70,6 +70,22 @@ def class_wise_nsc_master(nsc_df):
     nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc_master.xlsx'))
     print("base class wise , govt , tower nsc master files created in nsc_class_wise_master folder")
 
+def different_nsc_reports(nsc_df):
+    '''
+    this function creates different NSC related reports except NSC master report and NSC pending reports
+    like nsc_collection , nsc_connection , nsc_witheld
+    
+    argument -- pandas dataframe
+    return -- None
+    '''
+    new_path = os.path.join(os.getcwd() , "nsc_other_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+
+    first_date , last_date = last_months_date()
+    nsc_df[nsc_df['COLLECTION_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
+    nsc_df[nsc_df['METER_INSTALL_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
+
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -86,6 +102,7 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         exit(1)
     nsc_df = pd.read_excel(filename)
     class_wise_nsc_master(nsc_df)
+    different_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
 
