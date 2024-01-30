@@ -46,6 +46,7 @@ def prob_wise_file_creation(foldername , filename):
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
 
+def class_wise_nsc_master(filename)
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -54,6 +55,15 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
     argument -- text as file name . default file name is New_Connection.xlsx
     return -- None
     '''
+    actual_path = os.getcwd()
+    os.chdir(foldername)
+    
+    if not os.path.exists(filename):
+        print("Filename {} does not exists . Create the file and try again".format(filename))
+        exit(1)
+    df = pd.read_excel(fullname)
+
+    os.chdir(actual_path)
 
 def main():
     filename = "APPLICATION_DETAILS.xlsx"
