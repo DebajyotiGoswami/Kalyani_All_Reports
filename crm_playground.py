@@ -54,13 +54,16 @@ def class_wise_nsc_master(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
+    new_path = os.path.join(os.getcwd() , "nsc_class_wise_master")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    
     agri_nsc_df = nsc_df[nsc_df['CONN_CLASS'] == 'A']
     ind_nsc_df = nsc_df[nsc_df['CONN_CLASS'] == 'I']
     ev_nsc_df = nsc_df[nsc_df['CONN_CLASS'] == 'EV']
     govt_nsc_df = nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])]
     dom_sc_df = nsc_df[nsc_df['CONN_CLASS'] == 'D']
     comm_nsc_df = nsc_df[nsc_df['CONN_CLASS'] == 'C']
-    print(agri_nsc_df.shape , govt_nsc_df.shape , comm_nsc_df.shape)
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
