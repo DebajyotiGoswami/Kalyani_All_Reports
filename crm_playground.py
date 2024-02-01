@@ -108,7 +108,6 @@ def different_nsc_reports(nsc_df):
         os.makedirs(new_path)
 
     first_date , last_date = last_months_date()
-    print(first_date , last_date , type(first_date) , type(last_date))
     nsc_coll_df = nsc_df[nsc_df['COLLECTION_DATE'].between(first_date , last_date)]
     nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
     nsc_coll_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month.xlsx'))
@@ -121,7 +120,13 @@ def pending_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    
+    pending_nsc_logic = (nsc_df['APPL_STATUS'] == 'PROCESSED') & (nsc_df['INSTALLATION_NO'] == '(null)') & \
+    (~nsc_df['SR_MAIN_STATUS'].isin(['REJECTED'])) & (nsc_df['COLLECTION_STATUS'] == 'Completed') &\
+    (nsc_df['COLLECTION_DATE']!='(null)') & \
+    (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
+    pending_nsc_df  = nsc_df[pending_nsc_logic]
+    print(pending_nsc_df.shape)
+
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -137,8 +142,8 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
     nsc_df = pd.read_excel(filename)
-    class_wise_nsc_master(nsc_df)
-    different_nsc_reports(nsc_df)
+    # class_wise_nsc_master(nsc_df)
+    # different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
@@ -148,7 +153,7 @@ def main():
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)
     create_folder(foldername)
-    prob_ccc_wise_file_creation(foldername , filename)
+    # prob_ccc_wise_file_creation(foldername , filename)
     new_connection(foldername , ) 
 
 
