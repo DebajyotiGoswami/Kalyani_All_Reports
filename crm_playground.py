@@ -28,9 +28,9 @@ def create_folder(foldername):
     new_path = os.getcwd() + '//' + foldername
     if not os.path.exists(new_path):
         os.makedirs(new_path)
-        print("{} folder Created".format(foldername))
+        print("\n{} folder Created\n".format(foldername))
     else:
-        print("{} folder already exists".format(foldername))
+        print("\n{} folder already exists\n".format(foldername))
 
 def prob_wise_file_creation(foldername , filename):
     '''
@@ -70,7 +70,7 @@ def class_wise_nsc_master(nsc_df):
     tower_nsc_df_logic = ( nsc_df['NAME'].str.contains('SUMMIT') ) |( nsc_df['NAME'].str.contains('RELIANCE GIO') ) |\
     ( nsc_df['NAME'].str.contains('RELIANCE JIO') ) | ( nsc_df['NAME'].str.contains('INDUS TOWER') ) | ( nsc_df['NAME'].str.contains('INDUSTOWER') )
     nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc_master.xlsx'))
-    print("base class wise , govt , tower nsc master files created in nsc_class_wise_master folder")
+    print("\nbase class wise , govt , tower nsc master files created in nsc_class_wise_master folder\n")
 
 def last_months_date():
     '''
@@ -95,14 +95,16 @@ def different_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    # new_path = os.path.join(os.getcwd() , "nsc_other_reports")
-    # if not os.path.exists(new_path):
-    #     os.makedirs(new_path)
+    new_path = os.path.join(os.getcwd() , "nsc_other_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
 
     first_date , last_date = last_months_date()
     print(first_date , last_date , type(first_date) , type(last_date))
-    # nsc_df[nsc_df['COLLECTION_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
-    # nsc_df[nsc_df['METER_INSTALL_DATE'].between("2023-12-01" , "2023-12-31")].to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month'))
+    nsc_coll_df = nsc_df[nsc_df['COLLECTION_DATE'].between(first_date , last_date)]
+    nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
+    nsc_coll_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month.xlsx'))
+    nsc_conn_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_connection_last_month.xlsx'))
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
@@ -119,7 +121,7 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
     nsc_df = pd.read_excel(filename)
-    class_wise_nsc_master(nsc_df)
+    # class_wise_nsc_master(nsc_df)
     different_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
@@ -127,9 +129,9 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
 def main():
     filename = "APPLICATION_DETAILS.xlsx"
     foldername = 'ALL_CRM_FILES'
-    #file_exists(filename)
-    #create_folder(foldername)
-    #prob_wise_file_creation(foldername , filename)
+    # file_exists(filename)
+    # create_folder(foldername)
+    # prob_wise_file_creation(foldername , filename)
     new_connection(foldername , ) 
 
 
