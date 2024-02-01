@@ -35,6 +35,7 @@ def create_folder(foldername):
 def prob_ccc_wise_file_creation(foldername , filename):
     '''
     this function search different prob_type in mother file and create separate files
+    also this function creates, for each ccc , separate master files are created including all types of problems
     based on those prob_type and rename them with prob_type , date , time
 
     argument -- text
@@ -47,6 +48,13 @@ def prob_ccc_wise_file_creation(foldername , filename):
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
+    
+    for each_ccc in list(set(crm_data['SUPP_OFF'])):
+        ccc_name = each_ccc.replace(" ","_").replace("-","_")
+        fullname = os.path.join(os.path.abspath(foldername) , "application_details_" + ccc_name + ".xlsx")
+        df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
+        df.to_excel(fullname)
+        print("{} file created in {} folder".format(fullname , foldername))
 
 def class_wise_nsc_master(nsc_df):
     '''
@@ -106,6 +114,14 @@ def different_nsc_reports(nsc_df):
     nsc_coll_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month.xlsx'))
     nsc_conn_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_connection_last_month.xlsx'))
 
+def pending_nsc_reports(nsc_df):
+    '''
+    this function creates pending nsc , pending master card reports details and summary
+    
+    argument -- pandas dataframe
+    return -- None
+    '''
+    
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -121,18 +137,19 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
     nsc_df = pd.read_excel(filename)
-    # class_wise_nsc_master(nsc_df)
+    class_wise_nsc_master(nsc_df)
     different_nsc_reports(nsc_df)
+    pending_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
 
 def main():
     filename = "APPLICATION_DETAILS.xlsx"
     foldername = 'ALL_CRM_FILES'
-    # file_exists(filename)
-    # create_folder(foldername)
+    file_exists(filename)
+    create_folder(foldername)
     prob_ccc_wise_file_creation(foldername , filename)
-    # new_connection(foldername , ) 
+    new_connection(foldername , ) 
 
 
 if __name__ == '__main__':
