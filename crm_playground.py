@@ -32,7 +32,7 @@ def create_folder(foldername):
     else:
         print("\n{} folder already exists\n".format(foldername))
 
-def prob_wise_file_creation(foldername , filename):
+def prob_ccc_wise_file_creation(foldername , filename):
     '''
     this function search different prob_type in mother file and create separate files
     based on those prob_type and rename them with prob_type , date , time
@@ -131,8 +131,8 @@ def main():
     foldername = 'ALL_CRM_FILES'
     # file_exists(filename)
     # create_folder(foldername)
-    # prob_wise_file_creation(foldername , filename)
-    new_connection(foldername , ) 
+    prob_ccc_wise_file_creation(foldername , filename)
+    # new_connection(foldername , ) 
 
 
 if __name__ == '__main__':
