@@ -131,11 +131,16 @@ def pending_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
+    new_path = os.path.join(os.getcwd() , "nsc_pending_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    
     pending_nsc_logic = (nsc_df['APPL_STATUS'] == 'PROCESSED') & (nsc_df['INSTALLATION_NO'] == '(null)') & \
     (~nsc_df['SR_MAIN_STATUS'].isin(['REJECTED'])) & (nsc_df['COLLECTION_STATUS'] == 'Completed') &\
     (nsc_df['COLLECTION_DATE']!='(null)') & \
     (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
     pending_nsc_df  = nsc_df[pending_nsc_logic]
+    pending_nsc_df.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_nsc_details.xlsx'))
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
@@ -155,8 +160,8 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
     nsc_df = pd.read_excel(new_path)
-    class_wise_nsc_master(nsc_df)
-    different_nsc_reports(nsc_df)
+    # class_wise_nsc_master(nsc_df)
+    # different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
@@ -166,7 +171,7 @@ def main():
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)
     create_folder(foldername)
-    prob_ccc_wise_file_creation(foldername , filename)
+    # prob_ccc_wise_file_creation(foldername , filename)
     new_connection(foldername , ) 
 
 
