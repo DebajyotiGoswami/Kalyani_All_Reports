@@ -42,20 +42,28 @@ def prob_ccc_wise_file_creation(foldername , filename):
     return -- None
     '''
     crm_data = pd.read_excel(filename) # main DataFrame 
+
+    new_path = os.path.join(os.getcwd() , foldername , "prob_type_wise_master")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    print(new_path)
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
-        fullname = os.path.join(os.path.abspath(foldername) , prob_name + '.xlsx')
+        fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
     
+    new_path = os.path.join(os.getcwd() , foldername , "ccc_wise_master")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
     for each_ccc in list(set(crm_data['SUPP_OFF'])):
         ccc_name = each_ccc.replace(" ","_").replace("-","_")
-        fullname = os.path.join(os.path.abspath(foldername) , "application_details_" + ccc_name + ".xlsx")
+        fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
         df.to_excel(fullname)
         print("{} file created in {} folder".format(fullname , foldername))
-
+    
 def class_wise_nsc_master(nsc_df):
     '''
     this function create class wise master file of new connection like
@@ -125,7 +133,6 @@ def pending_nsc_reports(nsc_df):
     (nsc_df['COLLECTION_DATE']!='(null)') & \
     (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
     pending_nsc_df  = nsc_df[pending_nsc_logic]
-    print(pending_nsc_df.shape)
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
@@ -142,8 +149,8 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
     nsc_df = pd.read_excel(filename)
-    # class_wise_nsc_master(nsc_df)
-    # different_nsc_reports(nsc_df)
+    class_wise_nsc_master(nsc_df)
+    different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
 
     os.chdir(actual_path)
@@ -153,8 +160,8 @@ def main():
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)
     create_folder(foldername)
-    # prob_ccc_wise_file_creation(foldername , filename)
-    new_connection(foldername , ) 
+    prob_ccc_wise_file_creation(foldername , filename)
+    # new_connection(foldername , ) 
 
 
 if __name__ == '__main__':
