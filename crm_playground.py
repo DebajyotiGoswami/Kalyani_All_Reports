@@ -46,13 +46,13 @@ def prob_ccc_wise_file_creation(foldername , filename):
     new_path = os.path.join(os.getcwd() , foldername , "prob_type_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
-    print(new_path)
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
         print("{} file created under {} folder".format(fullname , foldername))
+    print("\nDifferent problem wise files created\n")
     
     new_path = os.path.join(os.getcwd() , foldername , "ccc_wise_master")
     if not os.path.exists(new_path):
@@ -63,6 +63,8 @@ def prob_ccc_wise_file_creation(foldername , filename):
         df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
         df.to_excel(fullname)
         print("{} file created in {} folder".format(fullname , foldername))
+    print("\nDifferent ccc wise master files created\n")
+
     
 def class_wise_nsc_master(nsc_df):
     '''
@@ -120,6 +122,7 @@ def different_nsc_reports(nsc_df):
     nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
     nsc_coll_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month.xlsx'))
     nsc_conn_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_connection_last_month.xlsx'))
+    print("\nNSC collection and NSC connection files created\n")
 
 def pending_nsc_reports(nsc_df):
     '''
@@ -144,12 +147,14 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     actual_path = os.getcwd()
     os.chdir(foldername)
-    os.chdir('prob_type_wise_master')
+    # os.chdir('prob_type_wise_master')
 
-    if not os.path.exists(filename):
+    new_path = os.path.join(os.path.abspath(os.getcwd()) , "prob_type_wise_master" , filename)
+    # if not os.path.exists(filename):
+    if not os.path.exists(new_path):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
-    nsc_df = pd.read_excel(filename)
+    nsc_df = pd.read_excel(new_path)
     class_wise_nsc_master(nsc_df)
     different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
