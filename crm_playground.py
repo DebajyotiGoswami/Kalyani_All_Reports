@@ -137,9 +137,12 @@ def pending_nsc_reports(nsc_df):
     
     pending_nsc_logic = (nsc_df['APPL_STATUS'] == 'PROCESSED') & (nsc_df['INSTALLATION_NO'] == '(null)') & \
     (~nsc_df['SR_MAIN_STATUS'].isin(['REJECTED'])) & (nsc_df['COLLECTION_STATUS'] == 'Completed') &\
-    (nsc_df['COLLECTION_DATE']!='(null)') & \
-    (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
-    pending_nsc_df  = nsc_df[pending_nsc_logic]
+    (nsc_df['COLLECTION_DATE']!='(null)') & (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
+
+    columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
+               'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
+    
+    pending_nsc_df  = nsc_df[pending_nsc_logic][columns]
     pending_nsc_df.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_nsc_details.xlsx'))
 
 def new_connection(foldername , filename = "New_Connection.xlsx"):
