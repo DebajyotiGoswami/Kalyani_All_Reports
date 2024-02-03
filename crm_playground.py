@@ -144,6 +144,7 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
     '''
     actual_path = os.getcwd()
     os.chdir(foldername)
+    os.chdir('prob_type_wise_master')
 
     if not os.path.exists(filename):
         print("Filename {} does not exists . Create the file and try again".format(filename))
@@ -161,7 +162,7 @@ def main():
     file_exists(filename)
     create_folder(foldername)
     prob_ccc_wise_file_creation(foldername , filename)
-    # new_connection(foldername , ) 
+    new_connection(foldername , ) 
 
 
 if __name__ == '__main__':
