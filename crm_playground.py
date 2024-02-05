@@ -5,8 +5,6 @@ import os
 from datetime import datetime
 import datetime as datetime_module
 
-
-
 def file_exists(filename):
     '''
     this function checks whether a given filename exist in current directory or not
@@ -77,7 +75,6 @@ def prob_ccc_wise_file_creation(foldername , filename):
         print("{} file created in {} folder".format(fullname , foldername))
     print("\nDifferent ccc wise master files created\n")
 
-    
 def class_wise_nsc_master(nsc_df):
     '''
     this function create class wise master file of new connection like
@@ -184,11 +181,11 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
 def main():
     filename = "APPLICATION_DETAILS_TEMP.xlsx"
     foldername = 'ALL_CRM_FILES'
-    file_exists(filename)
-    create_folder(foldername)
-    prob_ccc_wise_file_creation(foldername , filename)
-    new_connection(foldername , ) 
-
+    file_exists(filename)  #check if the file exists or send error message
+    master_df = prepare_df_master(filename) #create the dataframe of the total master data
+    create_folder(foldername) #create folder , if not exits , and cd into it
+    prob_ccc_wise_file_creation(master_df) #problem wise and ccc wise master data creation
+    new_connection() #nsc related different reports 
 
 if __name__ == '__main__':
     main()
