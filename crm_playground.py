@@ -32,6 +32,17 @@ def create_folder(foldername):
     else:
         print("\n{} folder already exists\n".format(foldername))
 
+def modify_df(df):
+    '''
+    this functon modifies the crm_data dataframe with some customized columns 
+    like ccc_name , procedure-a/b , pole/nonpole , days since collection
+    
+    argument -- dataframe
+    return -- dataframe
+    '''
+    df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] #+ df['SUPP_OFF'].str[-8 : -7] + df['SUPP_OFF'].str[ : -8]
+    return df
+
 def prob_ccc_wise_file_creation(foldername , filename):
     '''
     this function search different prob_type in mother file and create separate files
@@ -42,6 +53,7 @@ def prob_ccc_wise_file_creation(foldername , filename):
     return -- None
     '''
     crm_data = pd.read_excel(filename) # main DataFrame 
+    crm_data = modify_df(crm_data)
 
     new_path = os.path.join(os.getcwd() , foldername , "prob_type_wise_master")
     if not os.path.exists(new_path):
@@ -170,11 +182,11 @@ def new_connection(foldername , filename = "New_Connection.xlsx"):
     os.chdir(actual_path)
 
 def main():
-    filename = "APPLICATION_DETAILS.xlsx"
+    filename = "APPLICATION_DETAILS_TEMP.xlsx"
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)
     create_folder(foldername)
-    # prob_ccc_wise_file_creation(foldername , filename)
+    prob_ccc_wise_file_creation(foldername , filename)
     new_connection(foldername , ) 
 
 
