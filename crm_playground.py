@@ -16,6 +16,18 @@ def file_exists(filename):
         print("Filename {} does not exists . Create the file and try again".format(filename))
         exit(1)
 
+def prepare_df_master(filename):
+    '''
+    this function takes a excel file i.e. appl_details and create a dataframe out of it
+    and then creates some customized columns also
+    
+    argument -- text
+    return -- DataFrame
+    '''
+    master_df = pd.read_excel(filename)
+    print("Dataframe of total application details created")
+    return master_df
+
 def create_folder(foldername):
     '''
     this function create a folder named "crm_files". Nothing else.
@@ -29,6 +41,8 @@ def create_folder(foldername):
         print("\n{} folder Created\n".format(foldername))
     else:
         print("\n{} folder already exists\n".format(foldername))
+    os.chdir(new_path)
+    print("\nWe are now in : {} folder\n".format(os.getcwd()))
 
 def modify_df(df):
     '''
@@ -41,19 +55,18 @@ def modify_df(df):
     df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] #+ df['SUPP_OFF'].str[-8 : -7] + df['SUPP_OFF'].str[ : -8]
     return df
 
-def prob_ccc_wise_file_creation(foldername , filename):
+def prob_ccc_wise_file_creation(crm_data):
     '''
-    this function search different prob_type in mother file and create separate files
+    this function search different prob_type in mother datafeame and create separate files
     also this function creates, for each ccc , separate master files are created including all types of problems
     based on those prob_type and rename them with prob_type , date , time
 
-    argument -- text
+    argument -- DataFrame
     return -- None
     '''
-    crm_data = pd.read_excel(filename) # main DataFrame 
     crm_data = modify_df(crm_data)
 
-    new_path = os.path.join(os.getcwd() , foldername , "prob_type_wise_master")
+    new_path = os.path.join(os.getcwd() , "prob_type_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
@@ -61,10 +74,10 @@ def prob_ccc_wise_file_creation(foldername , filename):
         fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
-        print("{} file created under {} folder".format(fullname , foldername))
+        print("{} file created under {} folder".format(fullname , new_path))
     print("\nDifferent problem wise files created\n")
     
-    new_path = os.path.join(os.getcwd() , foldername , "ccc_wise_master")
+    new_path = os.path.join(os.getcwd() , "ccc_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
     for each_ccc in list(set(crm_data['SUPP_OFF'])):
@@ -72,7 +85,7 @@ def prob_ccc_wise_file_creation(foldername , filename):
         fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
         df.to_excel(fullname)
-        print("{} file created in {} folder".format(fullname , foldername))
+        print("{} file created in {} folder".format(fullname , new_path))
     print("\nDifferent ccc wise master files created\n")
 
 def class_wise_nsc_master(nsc_df):
@@ -185,7 +198,7 @@ def main():
     master_df = prepare_df_master(filename) #create the dataframe of the total master data
     create_folder(foldername) #create folder , if not exits , and cd into it
     prob_ccc_wise_file_creation(master_df) #problem wise and ccc wise master data creation
-    new_connection() #nsc related different reports 
+    # new_connection() #nsc related different reports 
 
 if __name__ == '__main__':
     main()
