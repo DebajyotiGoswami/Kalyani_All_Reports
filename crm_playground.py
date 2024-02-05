@@ -167,29 +167,25 @@ def pending_nsc_reports(nsc_df):
     pending_nsc_df  = nsc_df[pending_nsc_logic][columns]
     pending_nsc_df.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_nsc_details.xlsx'))
 
-def new_connection(foldername , filename = "New_Connection.xlsx"):
+def new_connection(nsc_df):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
     collection in this month , connection in this month , witheld , class wise nsc master etc.
     
-    argument -- text as file name . default file name is New_Connection.xlsx
+    argument -- DataFrame
     return -- None
     '''
-    actual_path = os.getcwd()
-    os.chdir(foldername)
-    # os.chdir('prob_type_wise_master')
-
-    new_path = os.path.join(os.path.abspath(os.getcwd()) , "prob_type_wise_master" , filename)
-    # if not os.path.exists(filename):
-    if not os.path.exists(new_path):
-        print("Filename {} does not exists . Create the file and try again".format(filename))
-        exit(1)
-    nsc_df = pd.read_excel(new_path)
-    # class_wise_nsc_master(nsc_df)
-    # different_nsc_reports(nsc_df)
+    # new_path = os.path.join(os.path.abspath(os.getcwd()) , "prob_type_wise_master" , filename)
+    # # if not os.path.exists(filename):
+    # if not os.path.exists(new_path):
+    #     print("Filename {} does not exists . Create the file and try again".format(filename))
+    #     exit(1)
+    # nsc_df = pd.read_excel(new_path)
+    class_wise_nsc_master(nsc_df)
+    different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
 
-    os.chdir(actual_path)
+    # os.chdir(actual_path)
 
 def main():
     filename = "APPLICATION_DETAILS_TEMP.xlsx"
@@ -198,7 +194,7 @@ def main():
     master_df = prepare_df_master(filename) #create the dataframe of the total master data
     create_folder(foldername) #create folder , if not exits , and cd into it
     prob_ccc_wise_file_creation(master_df) #problem wise and ccc wise master data creation
-    # new_connection() #nsc related different reports 
+    new_connection(master_df[master_df['PROB_TYPE'] == 'New Connection']) #nsc related different reports 
 
 if __name__ == '__main__':
     main()
