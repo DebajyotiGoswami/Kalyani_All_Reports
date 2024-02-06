@@ -167,6 +167,28 @@ def pending_nsc_reports(nsc_df):
     pending_nsc_df  = nsc_df[pending_nsc_logic][columns]
     pending_nsc_df.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_nsc_details.xlsx'))
 
+def pending_master_card(nsc_df):
+    '''
+    this function prepares the pending master card report
+    
+    argument -- DataFrame
+    return -- None
+    '''
+    new_path = os.path.join(os.getcwd() , "nsc_pending_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    
+    pending_master_card_logic = (~nsc_df['SR_MAIN_STATUS'].isin(['DUPLICATE' , 'REJECTED'])) &  (nsc_df['APPL_STATUS'].isin(['PROCESSED' ,'SAP_INSERTED' , 'DCC_INSERTED'])) & \
+    (nsc_df['SERV_CONN_STATUS'] == 'Completed') & (nsc_df['SERV_CONN_DATE'] != '(null)') & (nsc_df['METER_ISSUE_STATUS'] == 'Completed') & \
+    (nsc_df['METER_INSTALL_DATE'] != '(null)') & (nsc_df['INSTALLATION_NO'] == '(null)') 
+
+    columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
+               'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
+    
+    pending_master_card  = nsc_df[pending_master_card_logic][columns]
+    pending_master_card.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_master_card.xlsx'))
+    print("\nPending master card file created in {}".format(new_path))
+
 def new_connection(nsc_df):
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
@@ -184,6 +206,7 @@ def new_connection(nsc_df):
     class_wise_nsc_master(nsc_df)
     different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
+    pending_master_card(nsc_df)
 
     # os.chdir(actual_path)
 
