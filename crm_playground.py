@@ -25,7 +25,7 @@ def prepare_df_master(filename):
     return -- DataFrame
     '''
     master_df = pd.read_excel(filename)
-    print("Dataframe of total application details created")
+    print("\nDataframe of total application details created")
     return master_df
 
 def create_folder(foldername):
@@ -74,7 +74,7 @@ def prob_ccc_wise_file_creation(crm_data):
         fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
         df.to_excel(fullname)
-        print("{} file created under {} folder".format(fullname , new_path))
+        print("\n{} file created under {} folder".format(fullname , new_path))
     print("\nDifferent problem wise files created\n")
     
     new_path = os.path.join(os.getcwd() , "ccc_wise_master")
@@ -85,7 +85,7 @@ def prob_ccc_wise_file_creation(crm_data):
         fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
         df.to_excel(fullname)
-        print("{} file created in {} folder".format(fullname , new_path))
+        print("\n{} file created in {} folder".format(fullname , new_path))
     print("\nDifferent ccc wise master files created\n")
 
 def class_wise_nsc_master(nsc_df):
