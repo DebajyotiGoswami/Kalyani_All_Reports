@@ -63,7 +63,7 @@ def ccc_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    crm_data = modify_df(crm_data)
+    # crm_data = modify_df(crm_data)
 
     new_path = os.path.join(os.getcwd() , "ccc_wise_master")
     if not os.path.exists(new_path):
@@ -83,7 +83,7 @@ def prob_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    crm_data = modify_df(crm_data)
+    # crm_data = modify_df(crm_data)
 
     new_path = os.path.join(os.getcwd() , "prob_type_wise_master")
     if not os.path.exists(new_path):
@@ -230,10 +230,11 @@ def new_connection(nsc_df):
     # os.chdir(actual_path)
 
 def main():
-    filename = "APPLICATION_DETAILS.xlsx"
+    filename = "APPLICATION_DETAILS_TEMP.xlsx"
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)  #check if the file exists or send error message
     master_df = prepare_df_master(filename) #create the datafram of the total master data
+    master_df = modify_df(master_df) #modify the dataframe as per our requirements
     create_folder(foldername + "-" + str(datetime.today())[:10]) #create folder , if not exits , and cd into it
     prob_wise_file_creation(master_df) #problem wise master data creation
     ccc_wise_file_creation(master_df) #ccc wise master data creation
