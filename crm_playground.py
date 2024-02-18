@@ -63,8 +63,6 @@ def ccc_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    # crm_data = modify_df(crm_data)
-
     new_path = os.path.join(os.getcwd() , "ccc_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
@@ -83,8 +81,6 @@ def prob_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    # crm_data = modify_df(crm_data)
-
     new_path = os.path.join(os.getcwd() , "prob_type_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
