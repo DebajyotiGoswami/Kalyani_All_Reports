@@ -1,4 +1,4 @@
-from crm_playground import file_exists , prepare_df_master , create_folder , ccc_wise_file_creation
+from crm_playground import file_exists , prepare_df_master , create_folder , ccc_wise_file_creation , create_folder_return_path
 from datetime import datetime
 import os
 
@@ -11,9 +11,7 @@ def defective_meter(df):
     argument -- dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "defective_meter_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
+    new_path = create_folder_return_path("defective_meter_reports")
 
 def conventional_meter(df):
     '''
@@ -23,10 +21,8 @@ def conventional_meter(df):
     argument -- dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "conventional_meter_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-
+    new_path = create_folder_return_path("conventional_meter_reports")
+    
 def hybrid_meter(df):
     '''
     function to create different hybrid meter reports like total hybrid , 
@@ -35,9 +31,7 @@ def hybrid_meter(df):
     argument -- dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "hybrid_meter_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
+    new_path = create_folder_return_path("hybrid_meter_reports")
 
 def other_report(df):
     '''
@@ -47,9 +41,7 @@ def other_report(df):
     argument -- dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "other_meter_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
+    new_path = create_folder_return_path("other_meter_reports")
 
 def main():
     filename = "meter_status_report.xlsx"
