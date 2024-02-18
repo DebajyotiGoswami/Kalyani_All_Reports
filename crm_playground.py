@@ -212,18 +212,10 @@ def new_connection(nsc_df):
     argument -- DataFrame
     return -- None
     '''
-    # new_path = os.path.join(os.path.abspath(os.getcwd()) , "prob_type_wise_master" , filename)
-    # # if not os.path.exists(filename):
-    # if not os.path.exists(new_path):
-    #     print("Filename {} does not exists . Create the file and try again".format(filename))
-    #     exit(1)
-    # nsc_df = pd.read_excel(new_path)
     class_wise_nsc_master(nsc_df)
     different_nsc_reports(nsc_df)
     pending_nsc_reports(nsc_df)
     pending_master_card(nsc_df)
-
-    # os.chdir(actual_path)
 
 def main():
     filename = "APPLICATION_DETAILS_TEMP.xlsx"
