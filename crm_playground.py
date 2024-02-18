@@ -67,7 +67,7 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     if not os.path.exists(new_path):
         os.makedirs(new_path)
     for each_ccc in list(set(crm_data[attr])):
-        ccc_name = each_ccc.replace(" ","_").replace("-","_")
+        ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data[attr] == each_ccc]
         df.to_excel(fullname)
