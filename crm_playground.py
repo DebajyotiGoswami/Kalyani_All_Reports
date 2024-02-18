@@ -69,11 +69,7 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     argument -- DataFrame , string
     return -- None
     '''
-    # new_path = os.path.join(os.getcwd() , "ccc_wise_master")
-    # if not os.path.exists(new_path):
-    #     os.makedirs(new_path)
     new_path = create_folder_return_path("ccc_wise_master")
-    
     for each_ccc in list(set(crm_data[attr])):
         ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
@@ -89,9 +85,7 @@ def prob_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "prob_type_wise_master")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
+    new_path = create_folder_return_path("prob_type_wise_master")
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
@@ -108,10 +102,7 @@ def class_wise_nsc_master(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "nsc_class_wise_master")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-    
+    new_path = create_folder_return_path("nsc_class_wise_master") 
     nsc_df[nsc_df['CONN_CLASS'] == 'A'].to_excel(os.path.join(os.path.abspath(new_path) ,'agri_nsc_master.xlsx'))
     nsc_df[nsc_df['CONN_CLASS'] == 'I'].to_excel(os.path.join(os.path.abspath(new_path) ,'ind_nsc_master.xlsx'))
     nsc_df[nsc_df['CONN_CLASS'] == 'EV'].to_excel(os.path.join(os.path.abspath(new_path) ,'ev_nsc_master.xlsx'))
@@ -147,10 +138,7 @@ def different_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "nsc_other_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-
+    new_path = create_folder_return_path("nsc_other_reports")
     first_date , last_date = last_months_date()
     nsc_coll_df = nsc_df[nsc_df['COLLECTION_DATE'].between(first_date , last_date)]
     nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
@@ -165,10 +153,7 @@ def pending_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "nsc_pending_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-    
+    new_path = create_folder_return_path("nsc_pending_reports")
     pending_nsc_logic = (nsc_df['APPL_STATUS'] == 'PROCESSED') & (nsc_df['INSTALLATION_NO'] == '(null)') & \
     (~nsc_df['SR_MAIN_STATUS'].isin(['REJECTED'])) & (nsc_df['COLLECTION_STATUS'] == 'Completed') &\
     (nsc_df['COLLECTION_DATE']!='(null)') & (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
@@ -186,10 +171,7 @@ def pending_master_card(nsc_df):
     argument -- DataFrame
     return -- None
     '''
-    new_path = os.path.join(os.getcwd() , "nsc_pending_reports")
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-    
+    new_path = create_folder_return_path("nsc_pending_reports")
     pending_master_card_logic = (~nsc_df['SR_MAIN_STATUS'].isin(['DUPLICATE' , 'REJECTED'])) &  (nsc_df['APPL_STATUS'].isin(['PROCESSED' ,'SAP_INSERTED' , 'DCC_INSERTED'])) & \
     (nsc_df['SERV_CONN_STATUS'] == 'Completed') & (nsc_df['SERV_CONN_DATE'] != '(null)') & (nsc_df['METER_ISSUE_STATUS'] == 'Completed') & \
     (nsc_df['METER_INSTALL_DATE'] != '(null)') & (nsc_df['INSTALLATION_NO'] == '(null)') 
