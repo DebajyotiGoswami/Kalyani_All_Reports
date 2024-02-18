@@ -55,21 +55,21 @@ def modify_df(df):
     df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] #+ df['SUPP_OFF'].str[-8 : -7] + df['SUPP_OFF'].str[ : -8]
     return df
 
-def ccc_wise_file_creation(crm_data):
+def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     '''
     this function search different ccc name in mother datafeame and create separate files
     based on those ccc name and rename them with ccc name , date , time
 
-    argument -- DataFrame
+    argument -- DataFrame , string
     return -- None
     '''
     new_path = os.path.join(os.getcwd() , "ccc_wise_master")
     if not os.path.exists(new_path):
         os.makedirs(new_path)
-    for each_ccc in list(set(crm_data['SUPP_OFF'])):
+    for each_ccc in list(set(crm_data[attr])):
         ccc_name = each_ccc.replace(" ","_").replace("-","_")
         fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
-        df = crm_data[crm_data['SUPP_OFF'] == each_ccc]
+        df = crm_data[crm_data[attr] == each_ccc]
         df.to_excel(fullname)
         print("\n{} file created in {} folder".format(fullname , new_path))
     print("\nDifferent ccc wise master files created\n")
