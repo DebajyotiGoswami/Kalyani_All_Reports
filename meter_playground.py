@@ -11,7 +11,9 @@ def defective_meter(df):
     argument -- dataframe
     return -- None
     '''
-    print(os.getcwd())
+    new_path = os.path.join(os.getcwd() , "defective_meter_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
 
 def conventional_meter(df):
     '''
@@ -21,7 +23,9 @@ def conventional_meter(df):
     argument -- dataframe
     return -- None
     '''
-    print(os.getcwd())
+    new_path = os.path.join(os.getcwd() , "conventional_meter_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
 
 def hybrid_meter(df):
     '''
@@ -31,7 +35,9 @@ def hybrid_meter(df):
     argument -- dataframe
     return -- None
     '''
-    print(os.getcwd())
+    new_path = os.path.join(os.getcwd() , "hybrid_meter_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
 
 def other_report(df):
     '''
@@ -41,7 +47,9 @@ def other_report(df):
     argument -- dataframe
     return -- None
     '''
-    print(os.getcwd())
+    new_path = os.path.join(os.getcwd() , "other_meter_reports")
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
 
 def main():
     filename = "meter_status_report.xlsx"
