@@ -25,7 +25,7 @@ def prepare_df_master(filename):
     return -- DataFrame
     '''
     master_df = pd.read_excel(filename)
-    print("\nDataframe of total application details created")
+    print("\nDataframe of {} details created".format(filename))
     return master_df
 
 def create_folder(foldername):
