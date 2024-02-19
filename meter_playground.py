@@ -12,6 +12,16 @@ def defective_meter(df):
     return -- None
     '''
     new_path = create_folder_return_path("defective_meter_reports")
+    defective_df = df[(df['CURR_DEF_STATUS'] == 'X') & (df['CONN_STAT'] == 'LIVE')]
+    defective_3ph_df = defective_df[defective_df['PHASE'] == 3]
+    defetive_ind_df = defective_df[defective_df['BASE_CLASS'] == 'I']
+    defective_2kw_df = defective_df[defective_df['CONN_LOAD'] > 2.35]
+
+    print(defective_df.shape)
+    print(defective_3ph_df.shape)
+    print(defetive_ind_df.shape)
+    print(defective_2kw_df.shape)
+
 
 def conventional_meter(df):
     '''
