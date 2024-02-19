@@ -62,6 +62,13 @@ def create_folder_return_path(foldername):
     return new_path
 
 def create_file_from_df(foldername , filename , df):
+    '''
+    I really loved creating this function. What it does is create a file based on a given dataframe ,
+    then rename it to given filename and save this file to given foldername
+    
+    argument -- text (foldername) , text(filename) , dataframe
+    return -- None
+    '''
     new_path = create_folder_return_path(foldername)
     fullname = os.path.join(os.path.abspath(new_path) , filename)
     df.to_excel(fullname)
@@ -138,12 +145,12 @@ def different_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = create_folder_return_path("nsc_other_reports")
+    foldername = "nsc_other_reports"
     first_date , last_date = last_months_date()
     nsc_coll_df = nsc_df[nsc_df['COLLECTION_DATE'].between(first_date , last_date)]
     nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
-    nsc_coll_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_collection_last_month.xlsx'))
-    nsc_conn_df.to_excel(os.path.join(os.path.abspath(new_path) ,'nsc_connection_last_month.xlsx'))
+    create_file_from_df(foldername , "nsc_collection_last_month.xlsx" , nsc_coll_df)
+    create_file_from_df(foldername , "nsc_connection_last_month.xlsx" , nsc_conn_df)
     print("\nNSC collection and NSC connection files created\n")
 
 def pending_nsc_reports(nsc_df):
@@ -153,7 +160,6 @@ def pending_nsc_reports(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = create_folder_return_path("nsc_pending_reports")
     pending_nsc_logic = (nsc_df['APPL_STATUS'] == 'PROCESSED') & (nsc_df['INSTALLATION_NO'] == '(null)') & \
     (~nsc_df['SR_MAIN_STATUS'].isin(['REJECTED'])) & (nsc_df['COLLECTION_STATUS'] == 'Completed') &\
     (nsc_df['COLLECTION_DATE']!='(null)') & (~nsc_df['SERV_CONN_STATUS'].isin(['Completed','Witheld','Rejected','Cancelled','Closed','Disputed']))
@@ -161,8 +167,7 @@ def pending_nsc_reports(nsc_df):
     columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
                'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
     
-    pending_nsc_df  = nsc_df[pending_nsc_logic][columns]
-    pending_nsc_df.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_nsc_details.xlsx'))
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_nsc_details.xlsx" , df = nsc_df[pending_nsc_logic][columns])
 
 def pending_master_card(nsc_df):
     '''
@@ -171,7 +176,6 @@ def pending_master_card(nsc_df):
     argument -- DataFrame
     return -- None
     '''
-    new_path = create_folder_return_path("nsc_pending_reports")
     pending_master_card_logic = (~nsc_df['SR_MAIN_STATUS'].isin(['DUPLICATE' , 'REJECTED'])) &  (nsc_df['APPL_STATUS'].isin(['PROCESSED' ,'SAP_INSERTED' , 'DCC_INSERTED'])) & \
     (nsc_df['SERV_CONN_STATUS'] == 'Completed') & (nsc_df['SERV_CONN_DATE'] != '(null)') & (nsc_df['METER_ISSUE_STATUS'] == 'Completed') & \
     (nsc_df['METER_INSTALL_DATE'] != '(null)') & (nsc_df['INSTALLATION_NO'] == '(null)') 
@@ -179,9 +183,8 @@ def pending_master_card(nsc_df):
     columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
                'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
     
-    pending_master_card  = nsc_df[pending_master_card_logic][columns]
-    pending_master_card.to_excel(os.path.join(os.path.abspath(new_path) , 'pending_master_card.xlsx'))
-    print("\nPending master card file created in {}".format(new_path))
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = nsc_df[pending_master_card_logic][columns])
+    print("\nPending master card file created")
 
 def new_connection(nsc_df):
     '''
