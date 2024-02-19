@@ -85,7 +85,7 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     for each_ccc in list(set(crm_data[attr])):
         ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
         df = crm_data[crm_data[attr] == each_ccc]
-        create_file_from_df("ccc_wise_master" , "application_details_" + ccc_name + ".xlsx" , df)
+        create_file_from_df("ccc_wise_master" , ccc_name + ".xlsx" , df)
     print("\nDifferent ccc wise master files created\n")
 
 def prob_wise_file_creation(crm_data):
