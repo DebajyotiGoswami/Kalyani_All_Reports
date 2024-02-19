@@ -65,7 +65,7 @@ def create_file_from_df(foldername , filename , df):
     new_path = create_folder_return_path(foldername)
     fullname = os.path.join(os.path.abspath(new_path) , filename)
     df.to_excel(fullname)
-    print("\n{} file created in {} folder".format(fullname , new_path))
+    print("\n{} file created in {} folder".format(filename , new_path))
 
 def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     '''
@@ -75,14 +75,10 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     argument -- DataFrame , string
     return -- None
     '''
-    # new_path = create_folder_return_path("ccc_wise_master")
     for each_ccc in list(set(crm_data[attr])):
         ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
-        # fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data[attr] == each_ccc]
-        # df.to_excel(fullname)
-        # print("\n{} file created in {} folder".format(fullname , new_path))
-        create_file_from_df("ccc_wise_master" , "application_details_" + ccc_name + ".xlsx" ,df)
+        create_file_from_df("ccc_wise_master" , "application_details_" + ccc_name + ".xlsx" , df)
     print("\nDifferent ccc wise master files created\n")
 
 def prob_wise_file_creation(crm_data):
@@ -92,14 +88,10 @@ def prob_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    # new_path = create_folder_return_path("prob_type_wise_master")
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
-        # fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
-        # df.to_excel(fullname)
         create_file_from_df("prob_type_wise_master" , prob_name + ".xlsx" , df)
-        # print("\n{} file created under {} folder".format(fullname , new_path))
     print("\nDifferent problem wise files created\n")
     
 def class_wise_nsc_master(nsc_df):
@@ -110,17 +102,17 @@ def class_wise_nsc_master(nsc_df):
     argument -- pandas dataframe
     return -- None
     '''
-    new_path = create_folder_return_path("nsc_class_wise_master") 
-    nsc_df[nsc_df['CONN_CLASS'] == 'A'].to_excel(os.path.join(os.path.abspath(new_path) ,'agri_nsc_master.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'I'].to_excel(os.path.join(os.path.abspath(new_path) ,'ind_nsc_master.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'EV'].to_excel(os.path.join(os.path.abspath(new_path) ,'ev_nsc_master.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])].to_excel(os.path.join(os.path.abspath(new_path) ,'govt_nsc_master.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'D'].to_excel(os.path.join(os.path.abspath(new_path) ,'dom_nsc_master.xlsx'))
-    nsc_df[nsc_df['CONN_CLASS'] == 'C'].to_excel(os.path.join(os.path.abspath(new_path) ,'comm_nsc_master.xlsx'))
-    nsc_df[nsc_df['APPLIED_AS'] == "Promoter/Developer"].to_excel(os.path.join(os.path.abspath(new_path) ,'proc_b_nsc_master.xlsx'))
+    foldername = "nsc_class_wise_master"
+    create_file_from_df(foldername , "agri_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'A']) 
+    create_file_from_df(foldername , "ind_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'I'])
+    create_file_from_df(foldername , "ev_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'EV'])
+    create_file_from_df(foldername , "govt_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])])
+    create_file_from_df(foldername , "dom_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'D'])
+    create_file_from_df(foldername , "comm_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'C'])
+    create_file_from_df(foldername , "prob_b_nsc_master.xlsx" , nsc_df[nsc_df['APPLIED_AS'] == 'Promoter/Developer'])
     tower_nsc_df_logic = ( nsc_df['NAME'].str.contains('SUMMIT') ) |( nsc_df['NAME'].str.contains('RELIANCE GIO') ) |\
     ( nsc_df['NAME'].str.contains('RELIANCE JIO') ) | ( nsc_df['NAME'].str.contains('INDUS TOWER') ) | ( nsc_df['NAME'].str.contains('INDUSTOWER') )
-    nsc_df[tower_nsc_df_logic].to_excel(os.path.join(os.path.abspath(new_path) ,'tower_nsc_master.xlsx'))
+    create_file_from_df(foldername , "tower_nsc_master.xlsx" , nsc_df[tower_nsc_df_logic])
     print("\nbase class wise , govt , tower nsc master files created in nsc_class_wise_master folder\n")
 
 def last_months_date():
