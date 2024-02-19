@@ -66,7 +66,7 @@ def create_file_from_df(foldername , filename , df):
     fullname = os.path.join(os.path.abspath(new_path) , filename)
     df.to_excel(fullname)
     print("\n{} file created in {} folder".format(fullname , new_path))
-    
+
 def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     '''
     this function search different ccc name in mother datafeame and create separate files
@@ -75,13 +75,14 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     argument -- DataFrame , string
     return -- None
     '''
-    new_path = create_folder_return_path("ccc_wise_master")
+    # new_path = create_folder_return_path("ccc_wise_master")
     for each_ccc in list(set(crm_data[attr])):
         ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
-        fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
+        # fullname = os.path.join(os.path.abspath(new_path) , "application_details_" + ccc_name + ".xlsx")
         df = crm_data[crm_data[attr] == each_ccc]
-        df.to_excel(fullname)
-        print("\n{} file created in {} folder".format(fullname , new_path))
+        # df.to_excel(fullname)
+        # print("\n{} file created in {} folder".format(fullname , new_path))
+        create_file_from_df("ccc_wise_master" , "application_details_" + ccc_name + ".xlsx" ,df)
     print("\nDifferent ccc wise master files created\n")
 
 def prob_wise_file_creation(crm_data):
