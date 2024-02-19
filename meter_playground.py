@@ -11,17 +11,10 @@ def defective_meter(df):
     argument -- dataframe
     return -- None
     '''
-    # foldername = "defective_meter_reports"
-    # new_path = create_folder_return_path("defective_meter_reports")
     defective_df = df[(df['CURR_DEF_STATUS'] == 'X') & (df['CONN_STAT'] == 'LIVE')]
     defective_3ph_df = defective_df[defective_df['PHASE'] == 3]
     defetive_ind_df = defective_df[defective_df['BASE_CLASS'] == 'I']
     defective_2kw_df = defective_df[defective_df['CONN_LOAD'] > 2.35]
-
-    # print(defective_df.shape)
-    # print(defective_3ph_df.shape)
-    # print(defetive_ind_df.shape)
-    # print(defective_2kw_df.shape)
 
     create_file_from_df(foldername = "defective_meter_reports", filename = "defective_meter.xlsx" , df = defective_df)
     create_file_from_df(foldername = "defective_meter_reports", filename = "3ph_defective.xlsx" , df = defective_3ph_df)
