@@ -61,6 +61,12 @@ def create_folder_return_path(foldername):
         os.makedirs(new_path)
     return new_path
 
+def create_file_from_df(foldername , filename , df):
+    new_path = create_folder_return_path(foldername)
+    fullname = os.path.join(os.path.abspath(new_path) , filename)
+    df.to_excel(fullname)
+    print("\n{} file created in {} folder".format(fullname , new_path))
+    
 def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     '''
     this function search different ccc name in mother datafeame and create separate files
