@@ -92,13 +92,14 @@ def prob_wise_file_creation(crm_data):
     argument -- DataFrame
     return -- None
     '''
-    new_path = create_folder_return_path("prob_type_wise_master")
+    # new_path = create_folder_return_path("prob_type_wise_master")
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
-        fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
+        # fullname = os.path.join(os.path.abspath(new_path) , prob_name + '.xlsx')
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
-        df.to_excel(fullname)
-        print("\n{} file created under {} folder".format(fullname , new_path))
+        # df.to_excel(fullname)
+        create_file_from_df("prob_type_wise_master" , prob_name + ".xlsx" , df)
+        # print("\n{} file created under {} folder".format(fullname , new_path))
     print("\nDifferent problem wise files created\n")
     
 def class_wise_nsc_master(nsc_df):
