@@ -29,7 +29,19 @@ def conventional_meter(df):
     argument -- dataframe
     return -- None
     '''
-    new_path = create_folder_return_path("conventional_meter_reports")
+    conven_df = df[(df['TYPE_OF_METER'] == 'ELECTROMAGNATIC') & (df['CONN_STAT'] == 'LIVE')]
+    conven_3ph_df = conven_df[conven_df['PHASE'] == 3]
+    conven_2kw_df = conven_df[conven_df['CONN_LOAD'] > 2.35]
+    conven_1kw_df = conven_2kw_df[conven_2kw_df['CONN_LOAD'] > 1.17]
+    conven_high_value_df = conven_df[conven_df['BASE_CLASS'].isin(['I' , 'A' , 'H' , 'W'])]
+    conven_defective_df = conven_df[conven_df['CURR_DEF_STATUS'] == 'X']
+
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conventional_meter.xlsx" , df = conven_df)
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conven_3phase_meter.xlsx" , df = conven_3ph_df)
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conven_2kw_meter.xlsx" , df = conven_2kw_df)
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conven_1kw_meter.xlsx" , df = conven_1kw_df)
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conven_high_value.xlsx" , df = conven_high_value_df)
+    create_file_from_df(foldername = "conventional_meter_reports" , filename = "conven_and_defective.xlsx" , df = conven_defective_df)
     
 def hybrid_meter(df):
     '''
