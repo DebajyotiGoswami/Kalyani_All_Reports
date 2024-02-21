@@ -61,7 +61,7 @@ def create_folder_return_path(foldername):
         os.makedirs(new_path)
     return new_path
 
-def create_file_from_df(foldername , filename , df):
+def create_file_from_df(foldername , filename , df ):#, row_set , column_set , value_set , func_set):
     '''
     I really loved creating this function. What it does is create a file based on a given dataframe ,
     then rename it to given filename and save this file to given foldername
@@ -71,7 +71,7 @@ def create_file_from_df(foldername , filename , df):
     '''
     new_path = create_folder_return_path(foldername)
     fullname = os.path.join(os.path.abspath(new_path) , filename)
-    df.to_excel(fullname)
+    df.to_excel(fullname , sheet_name = 'DETAILS')
     print("\n{} file created in {} folder".format(filename , new_path))
 
 def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
