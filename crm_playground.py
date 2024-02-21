@@ -61,7 +61,7 @@ def create_folder_return_path(foldername):
         os.makedirs(new_path)
     return new_path
 
-def create_file_from_df(foldername , filename , df ):#, row_set , column_set , value_set , func_set):
+def create_file_from_df(foldername , filename , df , row_set , column_set , value_set , func_set):
     '''
     I really loved creating this function. What it does is create a file based on a given dataframe ,
     then rename it to given filename and save this file to given foldername
@@ -69,12 +69,17 @@ def create_file_from_df(foldername , filename , df ):#, row_set , column_set , v
     argument -- text (foldername) , text(filename) , dataframe
     return -- None
     '''
+    # row_set = ['SUPP_OFF']
+    # columns_set = ['CONN_CLASS']
+    # value_set = ['APPL_NO']
+    # func_set = ['count']
+
     new_path = create_folder_return_path(foldername)
     fullname = os.path.join(os.path.abspath(new_path) , filename)
     if len(df.index) == 0:
-        df_pivot = pd.pivot_table(df , index = ['SUPP_OFF'] , columns = ['CONN_CLASS'] , values = ['APPL_NO'] , aggfunc = 'count')# , margins = True , margins_name = 'TOTAL')
+        df_pivot = pd.pivot_table(df , index = row_set , columns = column_set , values = value_set , aggfunc = func_set)# , margins = True , margins_name = 'TOTAL')
     else:
-        df_pivot = pd.pivot_table(df , index = ['SUPP_OFF'] , columns = ['CONN_CLASS'] , values = ['APPL_NO'] , aggfunc = 'count' , margins = True , margins_name = 'TOTAL')
+        df_pivot = pd.pivot_table(df , index = row_set , columns = column_set , values = value_set , aggfunc = func_set , margins = True , margins_name = 'TOTAL')
    
     with pd.ExcelWriter(fullname) as writer:
         df.to_excel(writer , sheet_name = 'DETAILS')
@@ -92,7 +97,7 @@ def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
     for each_ccc in list(set(crm_data[attr])):
         ccc_name = str(each_ccc).replace(" ","_").replace("-","_")
         df = crm_data[crm_data[attr] == each_ccc]
-        create_file_from_df("ccc_wise_master" , ccc_name + ".xlsx" , df)
+        create_file_from_df("ccc_wise_master" , ccc_name + ".xlsx" , df , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
     print("\nDifferent ccc wise master files created\n")
 
 def prob_wise_file_creation(crm_data):
@@ -105,7 +110,7 @@ def prob_wise_file_creation(crm_data):
     for each_prob_type in list(set(crm_data['PROB_TYPE'])):
         prob_name = each_prob_type.replace(" ","_")             #+ "_" + str(datetime.now())[:-7].replace(":","_").replace(" ","_").replace("-","_")
         df = crm_data[crm_data['PROB_TYPE'] == each_prob_type]
-        create_file_from_df("prob_type_wise_master" , prob_name + ".xlsx" , df)
+        create_file_from_df("prob_type_wise_master" , prob_name + ".xlsx" , df , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
     print("\nDifferent problem wise files created\n")
     
 def class_wise_nsc_master(nsc_df):
@@ -117,16 +122,16 @@ def class_wise_nsc_master(nsc_df):
     return -- None
     '''
     foldername = "nsc_class_wise_master"
-    create_file_from_df(foldername , "agri_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'A']) 
-    create_file_from_df(foldername , "ind_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'I'])
-    create_file_from_df(foldername , "ev_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'EV'])
-    create_file_from_df(foldername , "govt_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])])
-    create_file_from_df(foldername , "dom_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'D'])
-    create_file_from_df(foldername , "comm_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'C'])
-    create_file_from_df(foldername , "prob_b_nsc_master.xlsx" , nsc_df[nsc_df['APPLIED_AS'] == 'Promoter/Developer'])
+    create_file_from_df(foldername , "agri_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'A'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count']) 
+    create_file_from_df(foldername , "ind_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'I'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "ev_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'EV'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "govt_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'].isin(['G' , 'GS'])] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "dom_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'D'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "comm_nsc_master.xlsx" , nsc_df[nsc_df['CONN_CLASS'] == 'C'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "prob_b_nsc_master.xlsx" , nsc_df[nsc_df['APPLIED_AS'] == 'Promoter/Developer'] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
     tower_nsc_df_logic = ( nsc_df['NAME'].str.contains('SUMMIT') ) |( nsc_df['NAME'].str.contains('RELIANCE GIO') ) |\
-    ( nsc_df['NAME'].str.contains('RELIANCE JIO') ) | ( nsc_df['NAME'].str.contains('INDUS TOWER') ) | ( nsc_df['NAME'].str.contains('INDUSTOWER') )
-    create_file_from_df(foldername , "tower_nsc_master.xlsx" , nsc_df[tower_nsc_df_logic])
+    ( nsc_df['NAME'].str.contains('RELIANCE JIO') ) | ( nsc_df['NAME'].str.contains('INDUS TOWER') ) | ( nsc_df['NAME'].str.contains('INDUSTOWER'))
+    create_file_from_df(foldername , "tower_nsc_master.xlsx" , nsc_df[tower_nsc_df_logic] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'] )
     print("\nbase class wise , govt , tower nsc master files created in nsc_class_wise_master folder\n")
 
 def last_months_date():
@@ -156,8 +161,8 @@ def different_nsc_reports(nsc_df):
     first_date , last_date = last_months_date()
     nsc_coll_df = nsc_df[nsc_df['COLLECTION_DATE'].between(first_date , last_date)]
     nsc_conn_df = nsc_df[nsc_df['METER_INSTALL_DATE'].between(first_date , last_date)]
-    create_file_from_df(foldername , "nsc_collection_last_month.xlsx" , nsc_coll_df)
-    create_file_from_df(foldername , "nsc_connection_last_month.xlsx" , nsc_conn_df)
+    create_file_from_df(foldername , "nsc_collection_last_month.xlsx" , nsc_coll_df , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
+    create_file_from_df(foldername , "nsc_connection_last_month.xlsx" , nsc_conn_df , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
     print("\nNSC collection and NSC connection files created\n")
 
 def pending_nsc_reports(nsc_df):
@@ -174,7 +179,7 @@ def pending_nsc_reports(nsc_df):
     columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
                'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
     
-    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_nsc_details.xlsx" , df = nsc_df[pending_nsc_logic][columns])
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_nsc_details.xlsx" , df = nsc_df[pending_nsc_logic][columns] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
 
 def pending_master_card(nsc_df):
     '''
@@ -190,7 +195,7 @@ def pending_master_card(nsc_df):
     columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
                'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
     
-    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = nsc_df[pending_master_card_logic][columns])
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = nsc_df[pending_master_card_logic][columns] , row_set = ['SUPP_OFF'] , column_set = ['CONN_CLASS'] , value_set = ['APPL_NO'] , func_set = ['count'])
     print("\nPending master card file created")
 
 def new_connection(nsc_df):
