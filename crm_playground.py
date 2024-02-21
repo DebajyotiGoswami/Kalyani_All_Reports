@@ -71,7 +71,14 @@ def create_file_from_df(foldername , filename , df ):#, row_set , column_set , v
     '''
     new_path = create_folder_return_path(foldername)
     fullname = os.path.join(os.path.abspath(new_path) , filename)
-    df.to_excel(fullname , sheet_name = 'DETAILS')
+    if len(df.index) == 0:
+        df_pivot = pd.pivot_table(df , index = ['SUPP_OFF'] , columns = ['CONN_CLASS'] , values = ['APPL_NO'] , aggfunc = 'count')# , margins = True , margins_name = 'TOTAL')
+    else:
+        df_pivot = pd.pivot_table(df , index = ['SUPP_OFF'] , columns = ['CONN_CLASS'] , values = ['APPL_NO'] , aggfunc = 'count' , margins = True , margins_name = 'TOTAL')
+   
+    with pd.ExcelWriter(fullname) as writer:
+        df.to_excel(writer , sheet_name = 'DETAILS')
+        df_pivot.to_excel(writer , sheet_name = 'SUMMARY')
     print("\n{} file created in {} folder".format(filename , new_path))
 
 def ccc_wise_file_creation(crm_data , attr = "SUPP_OFF"):
