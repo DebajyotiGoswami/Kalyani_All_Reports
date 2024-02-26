@@ -52,7 +52,7 @@ def modify_df(df):
     argument -- dataframe
     return -- dataframe
     '''
-    df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] #+ df['SUPP_OFF'].str[-8 : -7] + df['SUPP_OFF'].str[ : -8]
+    df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] 
     return df
 
 def create_folder_return_path(foldername):
@@ -186,7 +186,7 @@ def pending_master_card(nsc_df):
     create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = nsc_df[pending_master_card_logic][columns])
     print("\nPending master card file created")
 
-def new_connection(nsc_df):
+def new_connection(nsc_df): 
     '''
     this function take care of all NSC related reports like pending nsc , pending master card , 
     collection in this month , connection in this month , witheld , class wise nsc master etc.
