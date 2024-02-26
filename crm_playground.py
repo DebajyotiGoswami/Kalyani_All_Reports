@@ -53,6 +53,7 @@ def modify_df(df):
     return -- dataframe
     '''
     df['SUPP_OFF'] = df['SUPP_OFF'].str[-7 : ] 
+    df['POLE_STATUS'] = df['POLE_REQUIRED'].apply(lambda x:'NON_POLE' if x in (0 , '(null)') else 'POLE')
     return df
 
 def create_folder_return_path(foldername):
