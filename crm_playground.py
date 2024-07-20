@@ -184,7 +184,17 @@ def pending_master_card(nsc_df):
     columns = ['SUPP_OFF' , 'APPL_NO' , 'CON_ID' , 'NAME' , 'ADDRESS' , 'CONN_CLASS' , 'CONN_PHASE' , 'LOAD_APPLIED' , 'POLE_REQUIRED' , \
                'COLLECTION_DATE' , 'WON_ASSIGNED' , 'APPLIED_AS' ]
     
-    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = nsc_df[pending_master_card_logic][columns])
+    pending_master_card_df= nsc_df[pending_master_card_logic][columns]
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card.xlsx" , df = pending_master_card_df)
+
+    pending_master_card_df['CCC_CODE']= pending_master_card_df.SUPP_OFF.str[-7:]
+    pending_master_card_summary_df= pd.pivot_table(pending_master_card_df, values= 'APPL_NO', index= ['CCC_CODE'], columns= ['CONN_CLASS'], aggfunc= ['count'], fill_value= 0, margins= True)
+    create_file_from_df(foldername = "nsc_pending_reports" , filename = "pending_master_card_summary.xlsx" , df = pending_master_card_summary_df)
+
+
+    
+
+    
     print("\nPending master card file created")
 
 def new_connection(nsc_df): 
@@ -201,7 +211,7 @@ def new_connection(nsc_df):
     pending_master_card(nsc_df)
 
 def main():
-    filename = "APPLICATION_DETAILS_TEMP.xlsx"
+    filename = "APPLICATION_DETAILS.xlsx"
     foldername = 'ALL_CRM_FILES'
     file_exists(filename)  #check if the file exists or send error message
     master_df = prepare_df_master(filename) #create the datafram of the total master data
